@@ -1,0 +1,179 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Навигация/Переключение режимов */
+#mode-selector button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#mode-selector button.active {
+    background-color: #333;
+    color: #fff;
+}
+
+#mode-selector button:hover:not(.active) {
+    background-color: #ddd;
+}
+
+/* СТИЛИ КЛАВИАТУРЫ           */
+#piano-keyboard {
+    position: relative;
+    display: flex;
+    max-width: fit-content; 
+    margin: 20px 0;
+    padding: 0;
+    background-color: #111; 
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --white-key-width: 50px; 
+}
+
+.key {
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.1s, transform 0.1s;
+    user-select: none;
+    box-sizing: border-box; 
+}
+
+/* БЕЛЫЕ КЛАВИШИ */
+.key.white {
+    width: var(--white-key-width);
+    background-color: #fff;
+    border: 1px solid #333;
+    border-top: none;
+    border-right: none; /* Убираем правый бордюр, чтобы не было двойных линий */
+    z-index: 1; 
+}
+/* Последняя белая клавиша должна иметь правый бордюр */
+#piano-keyboard > .key.white:last-child {
+    border-right: 1px solid #333; 
+}
+
+
+/* ЧЕРНЫЕ КЛАВИШИ */
+.key.black {
+    width: calc(var(--white-key-width) * 0.6); 
+    height: 120px; 
+    background-color: #333;
+    position: absolute;
+    z-index: 2; 
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ------------------------------------ */
+/* ПОЗИЦИОНИРОВАНИЕ ЧЕРНЫХ КЛАВИШЕЙ  */
+/* ------------------------------------ */
+
+/* Вычисляем позицию LEFT относительно начала контейнера #piano-keyboard. 
+   
+   Формула: (Номер белой клавиши слева * Ширина белой клавиши) - Смещение для центрирования
+   (Смещение ~ половина ширины черной клавиши)
+*/
+
+/* C#3 (1-я белая клавиша C3) */
+.key.black[data-note$="C#3"] { left: calc(var(--white-key-width) * 1 - (var(--white-key-width) * 0.3)); }
+/* D#3 (2-я белая клавиша D3) */
+.key.black[data-note$="D#3"] { left: calc(var(--white-key-width) * 2 - (var(--white-key-width) * 0.3)); }
+/* F#3 (4-я белая клавиша F3) */
+.key.black[data-note$="F#3"] { left: calc(var(--white-key-width) * 4 - (var(--white-key-width) * 0.3)); }
+/* G#3 (5-я белая клавиша G3) */
+.key.black[data-note$="G#3"] { left: calc(var(--white-key-width) * 5 - (var(--white-key-width) * 0.3)); }
+/* A#3 (6-я белая клавиша A3) */
+.key.black[data-note$="A#3"] { left: calc(var(--white-key-width) * 6 - (var(--white-key-width) * 0.3)); }
+
+
+/* C#4 (8-я белая клавиша C4) */
+.key.black[data-note$="C#4"] { left: calc(var(--white-key-width) * 8 - (var(--white-key-width) * 0.3)); }
+/* D#4 (9-я белая клавиша D4) */
+.key.black[data-note$="D#4"] { left: calc(var(--white-key-width) * 9 - (var(--white-key-width) * 0.3)); }
+/* F#4 (11-я белая клавиша F4) */
+.key.black[data-note$="F#4"] { left: calc(var(--white-key-width) * 11 - (var(--white-key-width) * 0.3)); }
+/* G#4 (12-я белая клавиша G4) */
+.key.black[data-note$="G#4"] { left: calc(var(--white-key-width) * 12 - (var(--white-key-width) * 0.3)); }
+/* A#4 (13-я белая клавиша A4) */
+.key.black[data-note$="A#4"] { left: calc(var(--white-key-width) * 13 - (var(--white-key-width) * 0.3)); }
+
+/* C#5 (15-я белая клавиша C5) */
+.key.black[data-note$="C#5"] { left: calc(var(--white-key-width) * 15 - (var(--white-key-width) * 0.3)); }
+/* D#5 (16-я белая клавиша D5 - если нужна) */
+/* .key.black[data-note$="D#5"] { left: calc(var(--white-key-width) * 16 - (var(--white-key-width) * 0.3)); } */
+
+
+
+/* Эффект нажатия (Общий) */
+.key.active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+/* Эффект нажатия (Белая клавиша) */
+.key.white.active {
+    background-color: #ddd; 
+}
+/* Эффект нажатия (Черная клавиша) */
+.key.black.active {
+    background-color: #555; 
+}
+
+/* Подпись клавиши клавиатуры */
+.key-label {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    /* Тень для читаемости на белых */
+    text-shadow: 0 0 3px #fff; 
+}
+
+.key.black .key-label {
+    color: #fff;
+    /* Тень для читаемости на черных */
+    text-shadow: 0 0 3px #000; 
+}
+
+
+@media (max-width: 800px) {
+    #piano-keyboard {
+        --white-key-width: 35px;
+    }
+    .key {
+        height: 150px;
+    }
+    .key.black {
+        height: 90px;
+    }
+    .key-label {
+        font-size: 10px;
+        bottom: 2px;
+    }
+}
