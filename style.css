@@ -1,18 +1,27 @@
+/* Гарантируем, что корневые элементы занимают весь экран */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Общие стили */
 body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
     background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
+    min-height: 100vh; /* Занимаем всю высоту экрана */
 }
 
 header {
     width: 100%;
     max-width: 1200px;
-    margin-bottom: 30px;
+    padding: 20px; 
     text-align: center;
+    box-sizing: border-box;
 }
 
 h1 {
@@ -20,7 +29,7 @@ h1 {
     margin-bottom: 10px;
 }
 
-/* Навигация/Переключение режимов */
+/* Навигация/Переключение режимов (Оставим для Шага 4) */
 #mode-selector button {
     padding: 10px 20px;
     margin: 0 5px;
@@ -40,38 +49,52 @@ h1 {
     background-color: #ddd;
 }
 
-/* СТИЛИ КЛАВИАТУРЫ           */
+/* СТИЛИ КЛАВИАТУРЫ (ПОЛНОЭКРАННЫЙ РЕЖИМ) */
+
+#piano-app {
+    /* Контейнер приложения занимает оставшееся пространство */
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Клавиатура будет прижата к низу */
+    width: 100%;
+}
+
 #piano-keyboard {
     position: relative;
     display: flex;
-    max-width: fit-content; 
-    margin: 20px 0;
+    width: 100%; /* Занимает всю ширину */
+    margin: 0;
     padding: 0;
     background-color: #111; 
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --white-key-width: 50px; 
+    border-radius: 0; 
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3); 
+    
+    --white-key-min-width: 55px; /* Минимальная ширина белой клавиши */
 }
 
+/* Общие стили для клавиши */
 .key {
-    height: 200px;
+    height: 30vh; /* Высота зависит от высоты экрана */
     position: relative;
     cursor: pointer;
     transition: background-color 0.1s, transform 0.1s;
     user-select: none;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 /* БЕЛЫЕ КЛАВИШИ */
 .key.white {
-    width: var(--white-key-width);
+    flex-grow: 1; /* РАСТЯГИВАНИЕ на всю ширину */
+    min-width: var(--white-key-min-width); 
+
     background-color: #fff;
     border: 1px solid #333;
     border-top: none;
-    border-right: none; /* Убираем правый бордюр, чтобы не было двойных линий */
+    border-right: none; 
     z-index: 1; 
 }
-/* Последняя белая клавиша должна иметь правый бордюр */
+
 #piano-keyboard > .key.white:last-child {
     border-right: 1px solid #333; 
 }
@@ -79,8 +102,8 @@ h1 {
 
 /* ЧЕРНЫЕ КЛАВИШИ */
 .key.black {
-    width: calc(var(--white-key-width) * 0.6); 
-    height: 120px; 
+    width: calc(var(--white-key-min-width) * 0.6); 
+    height: 60%; 
     background-color: #333;
     position: absolute;
     z-index: 2; 
@@ -88,61 +111,50 @@ h1 {
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* ------------------------------------ */
-/* ПОЗИЦИОНИРОВАНИЕ ЧЕРНЫХ КЛАВИШЕЙ  */
-/* ------------------------------------ */
+/* ПОЗИЦИОНИРОВАНИЕ ЧЕРНЫХ КЛАВИШЕЙ (29 белых клавиш: C3-C7) */
 
-/* Вычисляем позицию LEFT относительно начала контейнера #piano-keyboard. 
-   
-   Формула: (Номер белой клавиши слева * Ширина белой клавиши) - Смещение для центрирования
-   (Смещение ~ половина ширины черной клавиши)
-*/
+/* Общее количество белых клавиш: 29. LEFT = (100% / 29 * [N]) - 30% */
 
-/* C#3 (1-я белая клавиша C3) */
-.key.black[data-note$="C#3"] { left: calc(var(--white-key-width) * 1 - (var(--white-key-width) * 0.3)); }
-/* D#3 (2-я белая клавиша D3) */
-.key.black[data-note$="D#3"] { left: calc(var(--white-key-width) * 2 - (var(--white-key-width) * 0.3)); }
-/* F#3 (4-я белая клавиша F3) */
-.key.black[data-note$="F#3"] { left: calc(var(--white-key-width) * 4 - (var(--white-key-width) * 0.3)); }
-/* G#3 (5-я белая клавиша G3) */
-.key.black[data-note$="G#3"] { left: calc(var(--white-key-width) * 5 - (var(--white-key-width) * 0.3)); }
-/* A#3 (6-я белая клавиша A3) */
-.key.black[data-note$="A#3"] { left: calc(var(--white-key-width) * 6 - (var(--white-key-width) * 0.3)); }
+/* ОКТАВА 3 (С3-B3) */
+.key.black[data-note$="C#3"] { left: calc(100% / 29 * 1 - 30%); }
+.key.black[data-note$="D#3"] { left: calc(100% / 29 * 2 - 30%); }
+.key.black[data-note$="F#3"] { left: calc(100% / 29 * 4 - 30%); }
+.key.black[data-note$="G#3"] { left: calc(100% / 29 * 5 - 30%); }
+.key.black[data-note$="A#3"] { left: calc(100% / 29 * 6 - 30%); }
 
+/* ОКТАВА 4 (C4-B4) - Начинается с 8-й белой клавиши (C4) */
+.key.black[data-note$="C#4"] { left: calc(100% / 29 * 8 - 30%); }
+.key.black[data-note$="D#4"] { left: calc(100% / 29 * 9 - 30%); }
+.key.black[data-note$="F#4"] { left: calc(100% / 29 * 11 - 30%); }
+.key.black[data-note$="G#4"] { left: calc(100% / 29 * 12 - 30%); }
+.key.black[data-note$="A#4"] { left: calc(100% / 29 * 13 - 30%); }
 
-/* C#4 (8-я белая клавиша C4) */
-.key.black[data-note$="C#4"] { left: calc(var(--white-key-width) * 8 - (var(--white-key-width) * 0.3)); }
-/* D#4 (9-я белая клавиша D4) */
-.key.black[data-note$="D#4"] { left: calc(var(--white-key-width) * 9 - (var(--white-key-width) * 0.3)); }
-/* F#4 (11-я белая клавиша F4) */
-.key.black[data-note$="F#4"] { left: calc(var(--white-key-width) * 11 - (var(--white-key-width) * 0.3)); }
-/* G#4 (12-я белая клавиша G4) */
-.key.black[data-note$="G#4"] { left: calc(var(--white-key-width) * 12 - (var(--white-key-width) * 0.3)); }
-/* A#4 (13-я белая клавиша A4) */
-.key.black[data-note$="A#4"] { left: calc(var(--white-key-width) * 13 - (var(--white-key-width) * 0.3)); }
+/* ОКТАВА 5 (C5-B5) - Начинается с 15-й белой клавиши (C5) */
+.key.black[data-note$="C#5"] { left: calc(100% / 29 * 15 - 30%); }
+.key.black[data-note$="D#5"] { left: calc(100% / 29 * 16 - 30%); }
+.key.black[data-note$="F#5"] { left: calc(100% / 29 * 18 - 30%); }
+.key.black[data-note$="G#5"] { left: calc(100% / 29 * 19 - 30%); }
+.key.black[data-note$="A#5"] { left: calc(100% / 29 * 20 - 30%); }
 
-/* C#5 (15-я белая клавиша C5) */
-.key.black[data-note$="C#5"] { left: calc(var(--white-key-width) * 15 - (var(--white-key-width) * 0.3)); }
-/* D#5 (16-я белая клавиша D5 - если нужна) */
-/* .key.black[data-note$="D#5"] { left: calc(var(--white-key-width) * 16 - (var(--white-key-width) * 0.3)); } */
+/* ОКТАВА 6 (C6-B6) - Начинается с 22-й белой клавиши (C6) */
+.key.black[data-note$="C#6"] { left: calc(100% / 29 * 22 - 30%); }
+.key.black[data-note$="D#6"] { left: calc(100% / 29 * 23 - 30%); }
+.key.black[data-note$="F#6"] { left: calc(100% / 29 * 25 - 30%); }
+.key.black[data-note$="G#6"] { left: calc(100% / 29 * 26 - 30%); }
+.key.black[data-note$="A#6"] { left: calc(100% / 29 * 27 - 30%); }
 
 
+/* ЭФФЕКТЫ И ПОДПИСИ КЛАВИШ     */
 
 /* Эффект нажатия (Общий) */
 .key.active {
     transform: translateY(2px);
     box-shadow: none;
 }
-/* Эффект нажатия (Белая клавиша) */
-.key.white.active {
-    background-color: #ddd; 
-}
-/* Эффект нажатия (Черная клавиша) */
-.key.black.active {
-    background-color: #555; 
-}
+.key.white.active { background-color: #ddd; }
+.key.black.active { background-color: #555; }
 
-/* Подпись клавиши клавиатуры */
+/* Подпись клавиши клавиатуры (Лейблы) */
 .key-label {
     position: absolute;
     bottom: 5px;
@@ -151,26 +163,34 @@ h1 {
     font-size: 14px;
     color: #333;
     font-weight: bold;
-    /* Тень для читаемости на белых */
     text-shadow: 0 0 3px #fff; 
+    z-index: 3; /* Поднимаем Z-index, чтобы лейблы были над черными клавишами */
 }
 
 .key.black .key-label {
-    color: #fff;
-    /* Тень для читаемости на черных */
-    text-shadow: 0 0 3px #000; 
+    /* Лейблы должны быть только на белых клавишах, 
+       поэтому скрываем их, если они случайно попали на черную клавишу */
+    display: none; 
 }
 
 
-@media (max-width: 800px) {
+/* АДАПТИВНЫЙ ДИЗАЙН (Для телефонов)   */
+
+@media (max-width: 1000px) {
     #piano-keyboard {
-        --white-key-width: 35px;
+        --white-key-min-width: 40px;
     }
     .key {
-        height: 150px;
+        height: 25vh;
     }
-    .key.black {
-        height: 90px;
+}
+
+@media (max-width: 600px) {
+    #piano-keyboard {
+        --white-key-min-width: 30px;
+    }
+    .key {
+        height: 20vh;
     }
     .key-label {
         font-size: 10px;
