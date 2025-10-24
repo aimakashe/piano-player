@@ -1,222 +1,274 @@
-/* Гарантируем, что корневые элементы занимают весь экран */
-html, body {
-    height: 100%;
-    width: 100%;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Общие стили */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #2c3e50;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    background-color: #f0f0f0;
-    min-height: 100vh; /* Занимаем всю высоту экрана */
+    /* Убрал overflow: hidden, чтобы позволить прокрутку, если нужно */
 }
 
-header {
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     width: 100%;
-    max-width: 1200px;
-    padding: 20px; 
-    text-align: center;
-    box-sizing: border-box;
+    /* overflow-x: hidden; убран */
 }
 
 h1 {
-    color: #333;
-    margin-bottom: 10px;
+    text-align: center;
+    color: white;
+    padding: 10px 0;
+    font-size: 24px;
+    background: #34495e;
 }
 
-/* Навигация/Переключение режимов (Оставим для Шага 4) */
-#mode-selector button {
+/* --- Стили для кнопок управления --- */
+
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background: #34495e;
+}
+
+.mode-btn {
+    padding: 8px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #7f8c8d;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.mode-btn.active {
+    background: #667eea;
+}
+
+.controls, .prepared-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #2c3e50;
+    flex-wrap: wrap; /* Для мобильных устройств */
+}
+
+#preparedControls {
+    display: none; /* Скрыто по умолчанию */
+}
+
+#preparedControls.active {
+    display: flex;
+}
+
+.btn {
     padding: 10px 20px;
-    margin: 0 5px;
-    border: 2px solid #333;
+    border: none;
     border-radius: 5px;
-    background-color: #fff;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
-#mode-selector button.active {
-    background-color: #333;
-    color: #fff;
+#recordBtn {
+    background: #e74c3c;
+    color: white;
 }
 
-#mode-selector button:hover:not(.active) {
-    background-color: #ddd;
+#recordBtn.recording {
+    background: #c0392b;
+    animation: pulse 1s infinite alternate;
 }
 
-/* СТИЛИ КЛАВИАТУРЫ (ПОЛНОЭКРАННЫЙ РЕЖИМ) */
+@keyframes pulse {
+    from { opacity: 1; }
+    to { opacity: 0.7; }
+}
 
-#piano-app {
-    /* Контейнер приложения занимает оставшееся пространство */
-    flex-grow: 1; 
+#downloadBtn {
+    background: #3498db;
+    color: white;
+}
+
+#playBtn, #pauseBtn, #stopBtn {
+    background: #2ecc71;
+    color: white;
+}
+
+#playBtn { background: #2ecc71; }
+#pauseBtn { background: #f39c12; }
+#stopBtn { background: #e74c3c; }
+
+.btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+}
+
+.btn:disabled {
+    background: #7f8c8d;
+    cursor: not-allowed;
+}
+
+.status {
+    text-align: center;
+    color: #ecf0f1;
+    padding: 10px;
+    background: #34495e;
+    font-style: italic;
+    min-height: 20px;
+}
+
+/* --- Стили для плеера --- */
+
+.file-upload {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Клавиатура будет прижата к низу */
+    align-items: center;
+    gap: 10px;
+}
+
+#fileInput {
+    display: none;
+}
+
+.playback-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.speed-control input {
+    width: 150px;
+}
+
+.progress-bar {
     width: 100%;
-}
-
-#piano-keyboard {
+    max-width: 400px;
+    height: 25px;
+    background: #2c3e50;
+    border-radius: 12px;
+    overflow: hidden;
     position: relative;
-    display: flex;
-    width: 100%; /* Занимает всю ширину */
-    margin: 0;
-    padding: 0;
-    background-color: #111; 
-    border-radius: 0; 
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3); 
-    
-    --white-key-min-width: 55px; /* Минимальная ширина белой клавиши */
+    border: 2px solid #667eea;
 }
 
-/* Общие стили для клавиши */
-.key {
-    height: 30vh; /* Высота зависит от высоты экрана */
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.1s, transform 0.1s;
-    user-select: none;
-    box-sizing: border-box;
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    transition: width 0.1s linear;
 }
 
-/* БЕЛЫЕ КЛАВИШИ */
-.key.white {
-    flex-grow: 1; /* РАСТЯГИВАНИЕ на всю ширину */
-    min-width: var(--white-key-min-width); 
-
-    background-color: #fff;
-    border: 1px solid #333;
-    border-top: none;
-    border-right: none; 
-    z-index: 1; 
-}
-
-#piano-keyboard > .key.white:last-child {
-    border-right: 1px solid #333; 
-}
-
-
-/* ЧЕРНЫЕ КЛАВИШИ */
-.key.black {
-    width: calc(var(--white-key-min-width) * 0.6); 
-    height: 60%; 
-    background-color: #333;
+.progress-time {
     position: absolute;
-    z-index: 2; 
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
 }
 
-/* ПОЗИЦИОНИРОВАНИЕ ЧЕРНЫХ КЛАВИШЕЙ (29 белых клавиш: C3-C7) */
+.song-info {
+    text-align: center;
+    color: #ecf0f1;
+    font-size: 13px;
+}
 
-/* Общее количество белых клавиш: 29. 
-   LEFT = (100% / 29 * (N + 0.5)) - 30%.
-   (N+0.5) находит центр между N-й и (N+1)-й белой клавишей.
-   30% — это половина ширины черной клавиши (60%).
-*/
+/* --- Стили для Пианино (Ключевые изменения) --- */
 
-/* ОКТАВА 3 (С3-B3) */
-/* C#3: после 1-й белой (1.5) */
-.key.black[data-note$="C#3"] { left: calc(100% / 29 * 1.5 - 30%); }
-/* D#3: после 2-й белой (2.5) */
-.key.black[data-note$="D#3"] { left: calc(100% / 29 * 2.5 - 30%); }
-/* F#3: после 4-й белой (4.5) */
-.key.black[data-note$="F#3"] { left: calc(100% / 29 * 4.5 - 30%); }
-/* G#3: после 5-й белой (5.5) */
-.key.black[data-note$="G#3"] { left: calc(100% / 29 * 5.5 - 30%); }
-/* A#3: после 6-й белой (6.5) */
-.key.black[data-note$="A#3"] { left: calc(100% / 29 * 6.5 - 30%); }
+.piano {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: 20px 0; /* Уменьшаем вертикальный паддинг */
+    background: #34495e;
+    overflow-x: auto; /* ПОЗВОЛЯЕТ ГОРИЗОНТАЛЬНУЮ ПРОКРУТКУ */
+    overflow-y: hidden;
+}
 
-/* ОКТАВА 4 (C4-B4) - Начинается с 8-й белой клавиши (C4) */
-/* C#4: после 8-й белой (8.5) */
-.key.black[data-note$="C#4"] { left: calc(100% / 29 * 8.5 - 30%); }
-/* D#4: после 9-й белой (9.5) */
-.key.black[data-note$="D#4"] { left: calc(100% / 29 * 9.5 - 30%); }
-/* F#4: после 11-й белой (11.5) */
-.key.black[data-note$="F#4"] { left: calc(100% / 29 * 11.5 - 30%); }
-/* G#4: после 12-й белой (12.5) */
-.key.black[data-note$="G#4"] { left: calc(100% / 29 * 12.5 - 30%); }
-/* A#4: после 13-й белой (13.5) */
-.key.black[data-note$="A#4"] { left: calc(100% / 29 * 13.5 - 30%); }
+.piano-container {
+    display: flex;
+    position: relative;
+    height: 300px; /* Фиксированная высота для клавиш */
+    min-width: 100%; /* Гарантирует, что клавиши начинаются с края */
+    flex-shrink: 0; 
+}
 
-/* ОКТАВА 5 (C5-B5) - Начинается с 15-й белой клавиши (C5) */
-/* C#5: после 15-й белой (15.5) */
-.key.black[data-note$="C#5"] { left: calc(100% / 29 * 15.5 - 30%); }
-/* D#5: после 16-й белой (16.5) */
-.key.black[data-note$="D#5"] { left: calc(100% / 29 * 16.5 - 30%); }
-/* F#5: после 18-й белой (18.5) */
-.key.black[data-note$="F#5"] { left: calc(100% / 29 * 18.5 - 30%); }
-/* G#5: после 19-й белой (19.5) */
-.key.black[data-note$="G#5"] { left: calc(100% / 29 * 19.5 - 30%); }
-/* A#5: после 20-й белой (20.5) */
-.key.black[data-note$="A#5"] { left: calc(100% / 29 * 20.5 - 30%); }
+/* Белые клавиши */
+.key {
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: all 0.05s ease-out;
+}
 
-/* ОКТАВА 6 (C6-B6) - Начинается с 22-й белой клавиши (C6) */
-/* C#6: после 22-й белой (22.5) */
-.key.black[data-note$="C#6"] { left: calc(100% / 29 * 22.5 - 30%); }
-/* D#6: после 23-й белой (23.5) */
-.key.black[data-note$="D#6"] { left: calc(100% / 29 * 23.5 - 30%); }
-/* F#6: после 25-й белой (25.5) */
-.key.black[data-note$="F#6"] { left: calc(100% / 29 * 25.5 - 30%); }
-/* G#6: после 26-й белой (26.5) */
-.key.black[data-note$="G#6"] { left: calc(100% / 29 * 26.5 - 30%); }
-/* A#6: после 27-й белой (27.5) */
-.key.black[data-note$="A#6"] { left: calc(100% / 29 * 27.5 - 30%); }
+.white-key {
+    width: 60px; /* Фиксированная ширина (должна совпадать с константой в JS) */
+    height: 100%;
+    background: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    z-index: 1;
+}
 
-/* ЭФФЕКТЫ И ПОДПИСИ КЛАВИШ     */
-
-/* Эффект нажатия (Общий) */
-.key.active {
-    transform: translateY(2px);
+.white-key.active {
+    background: #95a5a6;
+    transform: translateY(3px);
     box-shadow: none;
 }
-.key.white.active { background-color: #ddd; }
-.key.black.active { background-color: #555; }
 
-/* Подпись клавиши клавиатуры (Лейблы) */
+/* Черные клавиши */
+.black-key {
+    width: 40px; /* Фиксированная ширина (должна совпадать с константой в JS) */
+    height: 60%; 
+    background: #34495e;
+    border: 1px solid #2c3e50;
+    z-index: 2; /* Над белыми */
+    /* margin-left: -20px; убран, т.к. позиционирование теперь в script.js */
+}
+
+.black-key.active {
+    background: #667eea;
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
 .key-label {
     position: absolute;
-    bottom: 5px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 14px;
-    color: #333;
+    font-size: 11px;
+    color: #2c3e50;
+    white-space: pre; /* Для переноса строки \n */
+    text-align: center;
     font-weight: bold;
-    text-shadow: 0 0 3px #fff; 
-    z-index: 3; /* Поднимаем Z-index, чтобы лейблы были над черными клавишами */
 }
 
-.key.black .key-label {
-    /* Лейблы должны быть только на белых клавишах, 
-       поэтому скрываем их, если они случайно попали на черную клавишу */
-    display: none; 
-}
-
-
-/* АДАПТИВНЫЙ ДИЗАЙН (Для телефонов)   */
-
-@media (max-width: 1000px) {
-    #piano-keyboard {
-        --white-key-min-width: 40px;
-    }
-    .key {
-        height: 25vh;
-    }
-}
-
-@media (max-width: 600px) {
-    #piano-keyboard {
-        --white-key-min-width: 30px;
-    }
-    .key {
-        height: 20vh;
-    }
-    .key-label {
-        font-size: 10px;
-        bottom: 2px;
-    }
+.black-key .key-label {
+    color: #ecf0f1;
+    bottom: 5px;
 }

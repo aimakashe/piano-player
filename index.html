@@ -1,29 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PianoPlayer</title>
+    <title>Piano Player</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>🎹 Piano Player</h1>
+        
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="interactive">Interactive Mode</button>
+            <button class="mode-btn" data-mode="prepared">Prepared Mode</button>
+        </div>
 
-    <header>
-        <h1>PianoPlayer 🎹</h1>
-        <nav id="mode-selector">
-            <button id="interactive-mode-btn" class="active">Интерактивный Режим</button>
-            <button id="prepared-mode-btn">Подготовленный Режим</button>
-        </nav>
-    </header>
+        <div class="status" id="status"></div>
 
-    <main id="piano-app">
-        <section id="controls">
-            </section>
+        <div class="controls" id="interactiveControls">
+            <button class="btn" id="recordBtn">Start Recording</button>
+            <button class="btn" id="downloadBtn" disabled>Download Recording</button>
+        </div>
 
-        <div id="piano-keyboard">
+        <div class="prepared-controls" id="preparedControls">
+            <div class="file-upload">
+                <button class="btn" onclick="document.getElementById('fileInput').click()">Load Song</button>
+                <input type="file" id="fileInput" accept=".json">
             </div>
-    </main>
+            <div class="song-info" id="songInfo">No song loaded</div>
+            <div class="playback-controls">
+                <button class="btn" id="playBtn" disabled>Play</button>
+                <button class="btn" id="pauseBtn" disabled>Pause</button>
+                <button class="btn" id="stopBtn" disabled>Stop</button>
+            </div>
+            <div class="speed-control">
+                <label>Speed: <span id="speedValue">1.0x</span></label>
+                <input type="range" id="speedSlider" min="0.5" max="2" step="0.1" value="1">
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-time" id="progressTime">0:00 / 0:00</div>
+            </div>
+        </div>
 
-    <script src="script.js"></script>
+        <div class="piano" id="piano"></div>
+    </div>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>
