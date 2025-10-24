@@ -1,64 +1,205 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Piano Player</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎹 PianoPlayer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🎹 Piano Player</h1>
-      <div class="mode-switcher">
-        <button class="mode-btn active" data-mode="interactive">Интерактивный режим</button>
-        <button class="mode-btn" data-mode="prepared">Режим воспроизведения</button>
-      </div>
-    </header>
-
-    <div class="piano-wrapper">
-      <div class="piano" id="piano"></div>
+    <div class="app-header">
+        <h1 class="app-title">🎹 PianoPlayer</h1>
     </div>
 
-    <section class="mode" id="interactive-mode">
-      <div class="controls">
-        <button id="record-btn" class="btn btn-record">🔴 Запись</button>
-        <button id="stop-record-btn" class="btn btn-stop" disabled>⏹️ Остановить</button>
-        <button id="download-btn" class="btn btn-download" disabled>⬇️ Скачать</button>
-        <span id="record-time" class="record-time">00:00</span>
-      </div>
-    </section>
-
-    <section class="mode hidden" id="prepared-mode">
-      <div class="song-selector">
-        <label for="song-list">Выберите песню:</label>
-        <select id="song-list"><option value="">-- Выберите --</option></select>
-        <input type="file" id="file-input" accept=".json" style="display:none" />
-        <button class="btn" id="upload-btn">📁 Загрузить</button>
-      </div>
-
-      <div class="playback-controls">
-        <button id="play-btn" class="btn btn-play" disabled>▶️ Играть</button>
-        <button id="pause-btn" class="btn btn-pause" disabled>⏸️ Пауза</button>
-        <button id="stop-play-btn" class="btn btn-stop" disabled>⏹️ Остановить</button>
-        <div class="speed-control">
-          <label for="speed">Скорость:</label>
-          <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" />
-          <span id="speed-value">1x</span>
+    <div class="controls-container">
+        <!-- Recording Controls -->
+        <div class="control-group recording-group">
+            <button id="record-button" class="control-button record-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="8"/>
+                </svg>
+                <span>Начать запись</span>
+            </button>
+            <button id="stop-button" class="control-button stop-btn" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="6" width="12" height="12"/>
+                </svg>
+                <span>Остановить запись</span>
+            </button>
+            <button id="download-button" class="control-button download-btn" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                <span>Скачать запись</span>
+            </button>
         </div>
-      </div>
 
-      <div class="progress-wrap">
-        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
-        <div class="time-indicators"><span id="current-time">00:00</span> / <span id="total-time">00:00</span></div>
-      </div>
+        <!-- Playback Controls -->
+        <div class="control-group playback-group">
+            <label for="import-button" class="control-button import-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                </svg>
+                <span>Выбрать файл</span>
+            </label>
+            <input type="file" id="import-button" accept=".json" style="display: none;">
+            
+            <button id="play-button" class="control-button play-btn" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <span>Играть</span>
+            </button>
+            <button id="pause-button" class="control-button pause-btn" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+                <span>Пауза</span>
+            </button>
+            <button id="playback-stop-button" class="control-button stop-playback-btn" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="6" width="12" height="12"/>
+                </svg>
+                <span>Стоп</span>
+            </button>
+        </div>
 
-      <div id="upcoming-notes" class="upcoming-notes"><h3>Предстоящие ноты:</h3><ul></ul></div>
-    </section>
+        <!-- File Info -->
+        <div class="control-group info-group">
+            <span id="file-name-display" class="file-name"></span>
+        </div>
 
-    <footer class="credits"><small>Реализация: vanilla HTML/CSS/JS — Web Audio API</small></footer>
-  </div>
+        <!-- Progress Bar -->
+        <div class="control-group progress-group">
+            <span id="current-time" class="time-display">0:00</span>
+            <input type="range" id="progress-bar" value="0" class="progress-slider" disabled>
+            <span id="total-duration" class="time-display">0:00</span>
+        </div>
 
-  <script src="script.js"></script>
+        <!-- Speed Control -->
+        <div class="control-group speed-group">
+            <label>Скорость:</label>
+            <input type="range" id="song-speed" min="0.5" max="2" step="0.1" value="1" class="speed-slider" disabled>
+            <span id="speed-display" class="speed-value">x1.0</span>
+        </div>
+    </div>
+
+    <!-- Note Visualization -->
+    <div id="note-container" class="note-container">
+        <div id="note-scroller" class="note-scroller"></div>
+    </div>
+
+    <!-- Piano Keyboard -->
+    <div class="piano-wrapper">
+        <div class="piano">
+            <!-- A0 - B0 -->
+            <div class="key white" data-note="A0"></div>
+            <div class="key black bb0" data-note="Bb0"></div>
+            <div class="key white" data-note="B0"></div>
+            
+            <!-- C1 - B1 -->
+            <div class="key white" data-note="C1"></div>
+            <div class="key black db1" data-note="Db1"></div>
+            <div class="key white" data-note="D1"></div>
+            <div class="key black eb1" data-note="Eb1"></div>
+            <div class="key white" data-note="E1"></div>
+            <div class="key white" data-note="F1"></div>
+            <div class="key black gb1" data-note="Gb1"></div>
+            <div class="key white" data-note="G1"></div>
+            <div class="key black ab1" data-note="Ab1"></div>
+            <div class="key white" data-note="A1"></div>
+            <div class="key black bb1" data-note="Bb1"></div>
+            <div class="key white" data-note="B1"></div>
+            
+            <!-- C2 - B2 -->
+            <div class="key white" data-note="C2"></div>
+            <div class="key black db2" data-note="Db2"></div>
+            <div class="key white" data-note="D2"></div>
+            <div class="key black eb2" data-note="Eb2"></div>
+            <div class="key white" data-note="E2"></div>
+            <div class="key white" data-note="F2"></div>
+            <div class="key black gb2" data-note="Gb2"></div>
+            <div class="key white" data-note="G2"></div>
+            <div class="key black ab2" data-note="Ab2"></div>
+            <div class="key white" data-note="A2"></div>
+            <div class="key black bb2" data-note="Bb2"></div>
+            <div class="key white" data-note="B2"></div>
+            
+            <!-- C3 - B3 -->
+            <div class="key white" data-note="C3"></div>
+            <div class="key black db3" data-note="Db3"></div>
+            <div class="key white" data-note="D3"></div>
+            <div class="key black eb3" data-note="Eb3"></div>
+            <div class="key white" data-note="E3"></div>
+            <div class="key white" data-note="F3"></div>
+            <div class="key black gb3" data-note="Gb3"></div>
+            <div class="key white" data-note="G3"></div>
+            <div class="key black ab3" data-note="Ab3"></div>
+            <div class="key white" data-note="A3"></div>
+            <div class="key black bb3" data-note="Bb3"></div>
+            <div class="key white" data-note="B3"></div>
+            
+            <!-- C4 - B4 -->
+            <div class="key white" data-note="C4"></div>
+            <div class="key black db4" data-note="Db4"></div>
+            <div class="key white" data-note="D4"></div>
+            <div class="key black eb4" data-note="Eb4"></div>
+            <div class="key white" data-note="E4"></div>
+            <div class="key white" data-note="F4"></div>
+            <div class="key black gb4" data-note="Gb4"></div>
+            <div class="key white" data-note="G4"></div>
+            <div class="key black ab4" data-note="Ab4"></div>
+            <div class="key white" data-note="A4"></div>
+            <div class="key black bb4" data-note="Bb4"></div>
+            <div class="key white" data-note="B4"></div>
+            
+            <!-- C5 - B5 -->
+            <div class="key white" data-note="C5"></div>
+            <div class="key black db5" data-note="Db5"></div>
+            <div class="key white" data-note="D5"></div>
+            <div class="key black eb5" data-note="Eb5"></div>
+            <div class="key white" data-note="E5"></div>
+            <div class="key white" data-note="F5"></div>
+            <div class="key black gb5" data-note="Gb5"></div>
+            <div class="key white" data-note="G5"></div>
+            <div class="key black ab5" data-note="Ab5"></div>
+            <div class="key white" data-note="A5"></div>
+            <div class="key black bb5" data-note="Bb5"></div>
+            <div class="key white" data-note="B5"></div>
+            
+            <!-- C6 - B6 -->
+            <div class="key white" data-note="C6"></div>
+            <div class="key black db6" data-note="Db6"></div>
+            <div class="key white" data-note="D6"></div>
+            <div class="key black eb6" data-note="Eb6"></div>
+            <div class="key white" data-note="E6"></div>
+            <div class="key white" data-note="F6"></div>
+            <div class="key black gb6" data-note="Gb6"></div>
+            <div class="key white" data-note="G6"></div>
+            <div class="key black ab6" data-note="Ab6"></div>
+            <div class="key white" data-note="A6"></div>
+            <div class="key black bb6" data-note="Bb6"></div>
+            <div class="key white" data-note="B6"></div>
+            
+            <!-- C7 - B7 -->
+            <div class="key white" data-note="C7"></div>
+            <div class="key black db7" data-note="Db7"></div>
+            <div class="key white" data-note="D7"></div>
+            <div class="key black eb7" data-note="Eb7"></div>
+            <div class="key white" data-note="E7"></div>
+            <div class="key white" data-note="F7"></div>
+            <div class="key black gb7" data-note="Gb7"></div>
+            <div class="key white" data-note="G7"></div>
+            <div class="key black ab7" data-note="Ab7"></div>
+            <div class="key white" data-note="A7"></div>
+            <div class="key black bb7" data-note="Bb7"></div>
+            <div class="key white" data-note="B7"></div>
+            
+            <!-- C8 -->
+            <div class="key white" data-note="C8"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,14 +1,15 @@
 {
-  "name": "pianoplayer",
+  "name": "piano-player",
   "version": "1.0.0",
-  "description": "A pure HTML/CSS/JS piano player",
-  "main": "index.js",
+  "description": "",
+  "main": "script.js",
   "scripts": {
-    "lint": "eslint . --ext .js,.ts"
-  },
+  "lint": "ESLINT_USE_FLAT_CONFIG=false eslint ./"
+},
+  "keywords": [],
   "author": "",
-  "license": "MIT",
+  "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.50.0"
+    "eslint": "^9.35.0"
   }
 }
