@@ -1,23 +1,14 @@
 {
   "name": "pianoplayer",
   "version": "1.0.0",
-  "type": "module",
-  "main": "script.js",
+  "description": "A pure HTML/CSS/JS piano player",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint . --ext .js,.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@git.platform.alem.school:aimakashe/pianoplayer.git"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "devDependencies": {
-    "eslint": "^9.37.0"
+    "eslint": "^8.50.0"
   }
-  
 }
