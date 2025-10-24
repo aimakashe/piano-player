@@ -7,6 +7,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="controls">
+    <button id="record-btn">Record</button>
+    <span id="recording-indicator" class="hidden">Recording...</span>
+    <button id="download-btn">Download JSON</button>
+    <input type="file" id="load-json" accept=".json">
+    <button id="play-btn">Play</button>
+    <button id="pause-btn">Pause</button>
+    <button id="stop-btn">Stop</button>
+    <label>Speed:
+      <input type="range" id="speed-range" min="0.5" max="2" step="0.1" value="1">
+    </label>
+  </div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
   <div class="piano-container">
     <div class="piano" id="piano"></div>
   </div>
