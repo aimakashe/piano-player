@@ -1,13 +1,15 @@
 const audioContext = new AudioContext();
 
+// Маппинг клавиатуры согласно таблице
 const keyboardMap = {
-    'q': 'C3', '2': 'Db3', 'w': 'D3', '3': 'Eb3', 'e': 'E3', 'r': 'F3', '5': 'Gb3',
-    't': 'G3', '6': 'Ab3', 'y': 'A3', '7': 'Bb3', 'u': 'B3', 'i': 'C4', '9': 'Db4',
-    'o': 'D4', '0': 'Eb4', 'p': 'E4', 'z': 'F4', 's': 'Gb4', 'x': 'G4', 'd': 'Ab4',
-    'c': 'A4', 'f': 'Bb4', 'v': 'B4', 'b': 'C5', 'h': 'Db5', 'n': 'D5', 'j': 'Eb5',
-    'm': 'E5', ',': 'F5', 'l': 'Gb5', '.': 'G5', ';': 'Ab5', '/': 'A5'
+    'q': 'C3', '2': 'Db3', 'w': 'D3', '3': 'Eb3', 'e': 'E3',
+    'r': 'F3', '5': 'Gb3', 't': 'G3', '6': 'Ab3', 'y': 'A3', '7': 'Bb3', 'u': 'B3',
+    'i': 'C4', '9': 'Db4', 'o': 'D4', '0': 'Eb4', 'p': 'E4',
+    'z': 'F4', 's': 'Gb4', 'x': 'G4', 'd': 'Ab4', 'c': 'A4', 'f': 'Bb4', 'v': 'B4',
+    'b': 'C5', 'h': 'Db5', 'n': 'D5', 'j': 'Eb5', 'm': 'E5'
 };
 
+// Все ноты пианино (88 клавиш)
 const notes = [
     'A0', 'Bb0', 'B0',
     'C1', 'Db1', 'D1', 'Eb1', 'E1', 'F1', 'Gb1', 'G1', 'Ab1', 'A1', 'Bb1', 'B1',
@@ -20,10 +22,11 @@ const notes = [
     'C8'
 ];
 
+// Глобальные переменные
 const soundBuffers = {};
 let isRecording = false;
 let recordedNotes = [];
-let recordingStartTime;
+let recordingStartTime = 0;
 let pressedKeys = {};
 let loadedSong = null;
 let playbackTimeouts = [];
@@ -36,6 +39,7 @@ let animationFrameId = null;
 let savedRecording = null;
 let isMouseDown = false;
 
+// DOM элементы
 const recordBtn = document.getElementById('record-button');
 const stopBtn = document.getElementById('stop-button');
 const importBtn = document.getElementById('import-button');
@@ -50,89 +54,61 @@ const totalDurationDisplay = document.getElementById('total-duration');
 const speedDisplay = document.getElementById('speed-display');
 const downloadBtn = document.getElementById('download-button');
 const noteScroller = document.getElementById('note-scroller');
+const keys = document.querySelectorAll('.key');
 
 const playbackControls = [playBtn, pauseBtn, stopPlaybackBtn, speedSlider, progressBar];
 
-function noteToFrequency(note) {
-    const noteNames = {
-        'C': 0, 'Db': 1, 'D': 2, 'Eb': 3, 'E': 4, 'F': 5,
-        'Gb': 6, 'G': 7, 'Ab': 8, 'A': 9, 'Bb': 10, 'B': 11
-    };
-    const match = note.match(/([A-G]b?)(\d)/);
-    if (!match) return 440;
-    const noteName = match[1];
-    const octave = parseInt(match[2]);
-    const semitone = noteNames[noteName];
-    const a4 = 440;
-    const c0 = a4 * Math.pow(2, -4.75);
-    return c0 * Math.pow(2, octave + semitone / 12);
+// Загрузка звуков
+function loadSound(url) {
+    return fetch(url)
+        .then(res => res.arrayBuffer())
+        .then(buffer => audioContext.decodeAudioData(buffer))
+        .catch(() => null);
 }
 
-function loadSound(note) {
-    return new Promise((resolve) => {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        oscillator.frequency.value = noteToFrequency(note);
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        soundBuffers[note] = { oscillator, gainNode, loaded: true };
-        resolve();
+// Загружаем все звуки при старте
+notes.forEach(note => {
+    loadSound(`sounds/${note}.mp3`).then(decodedBuffer => {
+        if (decodedBuffer) {
+            soundBuffers[note] = decodedBuffer;
+        }
+    }).catch(() => {
+        // Звук не загрузился - игнорируем
     });
-}
+});
 
+// Воспроизведение звука
 function playSound(note) {
     if (audioContext.state === 'suspended') {
         audioContext.resume();
     }
     
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    const buffer = soundBuffers[note];
+    if (!buffer) return;
     
-    oscillator.type = 'sine';
-    oscillator.frequency.value = noteToFrequency(note);
-    
-    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    oscillator.start();
-    
-    if (!soundBuffers[note]) {
-        soundBuffers[note] = [];
-    }
-    soundBuffers[note].push({ oscillator, gainNode });
+    const source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioContext.destination);
+    source.start(0);
 }
 
-function stopSound(note) {
-    if (!soundBuffers[note]) return;
-    
-    const instances = soundBuffers[note];
-    if (Array.isArray(instances)) {
-        instances.forEach(({ oscillator, gainNode }) => {
-            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.1);
-            setTimeout(() => {
-                try {
-                    oscillator.stop();
-                } catch (e) {
-                    // Ignore if already stopped
-                }
-            }, 150);
-        });
-        soundBuffers[note] = [];
-    }
-}
-
+// Подсветка клавиши
 function highlightKey(note) {
     const keyElement = document.querySelector(`[data-note="${note}"]`);
-    if (keyElement) keyElement.classList.add('active');
+    if (keyElement) {
+        keyElement.classList.add('active');
+    }
 }
 
+// Убрать подсветку
 function unhighlightKey(note) {
     const keyElement = document.querySelector(`[data-note="${note}"]`);
-    if (keyElement) keyElement.classList.remove('active');
+    if (keyElement) {
+        keyElement.classList.remove('active');
+    }
 }
 
+// Форматирование времени
 function formatTime(ms) {
     const totalSeconds = Math.floor(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -140,9 +116,11 @@ function formatTime(ms) {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
+// Обработка нажатия клавиши
 function handleKeyPress(note) {
     playSound(note);
     highlightKey(note);
+    
     if (isRecording) {
         recordedNotes.push({
             key: note,
@@ -152,28 +130,29 @@ function handleKeyPress(note) {
     }
 }
 
+// Обработка отпускания клавиши
 function handleKeyRelease(note) {
-    stopSound(note);
     unhighlightKey(note);
+    
     if (isRecording) {
         const noteRecord = recordedNotes.find(n => n.key === note && n.duration === 0);
         if (noteRecord) {
             noteRecord.duration = Date.now() - recordingStartTime - noteRecord.startTime;
+            if (noteRecord.duration < 50) {
+                noteRecord.duration = 50;
+            }
         }
     }
 }
 
-notes.forEach(note => {
-    loadSound(note);
-});
-
-const keys = document.querySelectorAll('.key');
+// События мыши на клавишах
 keys.forEach(key => {
     const note = key.dataset.note;
     
     key.addEventListener('mousedown', function(event) {
         isMouseDown = true;
         if (event.button === 0 || event.button === 2) {
+            event.preventDefault();
             handleKeyPress(note);
         }
     });
@@ -199,15 +178,17 @@ keys.forEach(key => {
     });
 });
 
+// События клавиатуры
 window.addEventListener('keydown', function(event) {
-    const note = keyboardMap[event.key];
+    const note = keyboardMap[event.key.toLowerCase()];
     if (!note || pressedKeys[note]) return;
+    
     pressedKeys[note] = true;
     handleKeyPress(note);
 });
 
 window.addEventListener('keyup', function(event) {
-    const note = keyboardMap[event.key];
+    const note = keyboardMap[event.key.toLowerCase()];
     if (note && pressedKeys[note]) {
         delete pressedKeys[note];
         handleKeyRelease(note);
@@ -218,6 +199,7 @@ window.addEventListener('mouseup', function() {
     isMouseDown = false;
 });
 
+// Кнопка записи
 recordBtn.addEventListener('click', function() {
     isRecording = true;
     recordedNotes = [];
@@ -228,33 +210,46 @@ recordBtn.addEventListener('click', function() {
     savedRecording = null;
 });
 
+// Остановка записи
 stopBtn.addEventListener('click', function() {
     isRecording = false;
     stopBtn.disabled = true;
     recordBtn.classList.remove('is-recording');
+    
+    const totalDuration = Date.now() - recordingStartTime;
+    
+    recordedNotes.forEach(note => {
+        if (note.duration === 0 || note.duration < 50) {
+            note.duration = 200;
+        }
+    });
+    
     savedRecording = {
-        name: 'My Recording ' + new Date().toLocaleTimeString(),
-        duration: Date.now() - recordingStartTime,
+        name: 'My Recording',
+        duration: totalDuration,
         notes: recordedNotes
     };
+    
     downloadBtn.disabled = false;
 });
 
+// Скачивание записи
 downloadBtn.addEventListener('click', function() {
-    if (savedRecording) {
-        const jsonStr = JSON.stringify(savedRecording, null, 2);
-        const blob = new Blob([jsonStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'my-recording.json';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
+    if (!savedRecording) return;
+    
+    const jsonStr = JSON.stringify(savedRecording, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'recording-' + Date.now() + '.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 });
 
+// Загрузка файла
 importBtn.addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -265,9 +260,20 @@ importBtn.addEventListener('change', function(event) {
             stopSong();
             const songData = JSON.parse(e.target.result);
             
-            if (!songData || typeof songData.name !== 'string' || 
-                typeof songData.duration !== 'number' || !Array.isArray(songData.notes)) {
-                alert('Ошибка: неверный формат файла');
+            if (!songData || !songData.name || !songData.duration || !Array.isArray(songData.notes)) {
+                alert('Ошибка: неверный формат JSON файла');
+                return;
+            }
+            
+            songData.notes = songData.notes.filter(note => 
+                note.key && 
+                typeof note.startTime === 'number' && 
+                typeof note.duration === 'number' &&
+                note.duration > 0
+            );
+            
+            if (songData.notes.length === 0) {
+                alert('В файле нет валидных нот');
                 return;
             }
             
@@ -279,12 +285,13 @@ importBtn.addEventListener('change', function(event) {
             playbackControls.forEach(control => control.disabled = false);
             createFallingNotes(loadedSong);
         } catch (error) {
-            alert('Не удалось прочитать файл');
+            alert('Не удалось прочитать файл: ' + error.message);
         }
     };
     reader.readAsText(file);
 });
 
+// Кнопка Play
 playBtn.addEventListener('click', function() {
     if (!loadedSong) {
         alert('Сначала выберите файл');
@@ -298,6 +305,7 @@ playBtn.addEventListener('click', function() {
     animationFrameId = requestAnimationFrame(updateProgressBar);
 });
 
+// Кнопка Pause
 pauseBtn.addEventListener('click', function() {
     if (playbackState !== 'playing') return;
     
@@ -308,10 +316,12 @@ pauseBtn.addEventListener('click', function() {
     cancelAnimationFrame(animationFrameId);
 });
 
+// Кнопка Stop
 stopPlaybackBtn.addEventListener('click', function() {
     stopSong();
 });
 
+// Воспроизведение песни
 function playSong(song, startOffset) {
     clearAllTimeouts();
     
@@ -320,24 +330,24 @@ function playSong(song, startOffset) {
     song.notes.forEach(function(note) {
         if (note.startTime < startOffset) return;
         
+        const startDelay = (note.startTime - startOffset) / playbackSpeed;
+        const endDelay = (note.startTime + note.duration - startOffset) / playbackSpeed;
+        
         const startTimeout = setTimeout(() => {
             playSound(note.key);
             highlightKey(note.key);
-        }, (note.startTime - startOffset) / playbackSpeed);
+        }, startDelay);
+        
+        const endTimeout = setTimeout(() => {
+            unhighlightKey(note.key);
+        }, endDelay);
         
         playbackTimeouts.push(startTimeout);
-        
-        if (typeof note.duration === 'number') {
-            const endTimeout = setTimeout(() => {
-                unhighlightKey(note.key);
-                stopSound(note.key);
-            }, (note.startTime + note.duration - startOffset) / playbackSpeed);
-            
-            playbackTimeouts.push(endTimeout);
-        }
+        playbackTimeouts.push(endTimeout);
     });
 }
 
+// Регулятор скорости
 speedSlider.addEventListener('input', function(event) {
     if (playbackState === 'playing') {
         playbackPosition += (Date.now() - playbackRealTime) * playbackSpeed;
@@ -352,12 +362,14 @@ speedSlider.addEventListener('input', function(event) {
     }
 });
 
+// Очистка таймаутов
 function clearAllTimeouts() {
     playbackTimeouts.forEach(clearTimeout);
     playbackTimeouts = [];
     keys.forEach(key => key.classList.remove('active'));
 }
 
+// Прогресс бар события
 progressBar.addEventListener('mousedown', function() {
     if (playbackState === 'playing') {
         cancelAnimationFrame(animationFrameId);
@@ -383,6 +395,7 @@ progressBar.addEventListener('input', function(event) {
     currentTimeDisplay.textContent = formatTime(newTime);
 });
 
+// Создание падающих нот
 function createFallingNotes(song) {
     noteScroller.innerHTML = '';
     if (!song) return;
@@ -411,6 +424,7 @@ function createFallingNotes(song) {
     });
 }
 
+// Обновление прогресс бара
 function updateProgressBar() {
     if (playbackState === 'playing' && loadedSong) {
         const currentTime = playbackPosition + (Date.now() - playbackRealTime) * playbackSpeed;
@@ -436,6 +450,7 @@ function updateProgressBar() {
     }
 }
 
+// Остановка песни
 function stopSong() {
     playbackState = 'stopped';
     playbackPosition = 0;
