@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Piano Player</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="controls">
-    <button id="record-btn">Record</button>
-    <span id="recording-indicator" class="hidden">Recording...</span>
-    <button id="download-btn">Download JSON</button>
-    <input type="file" id="load-json" accept=".json">
-    <button id="play-btn">Play</button>
-    <button id="pause-btn">Pause</button>
-    <button id="stop-btn">Stop</button>
-    <label>Speed:
-      <input type="range" id="speed-range" min="0.5" max="2" step="0.1" value="1">
-    </label>
+  <div class="container">
+    <header>
+      <h1>🎹 Piano Player</h1>
+      <div class="mode-switcher">
+        <button class="mode-btn active" data-mode="interactive">Интерактивный режим</button>
+        <button class="mode-btn" data-mode="prepared">Режим воспроизведения</button>
+      </div>
+    </header>
+
+    <div class="piano-wrapper">
+      <div class="piano" id="piano"></div>
+    </div>
+
+    <section class="mode" id="interactive-mode">
+      <div class="controls">
+        <button id="record-btn" class="btn btn-record">🔴 Запись</button>
+        <button id="stop-record-btn" class="btn btn-stop" disabled>⏹️ Остановить</button>
+        <button id="download-btn" class="btn btn-download" disabled>⬇️ Скачать</button>
+        <span id="record-time" class="record-time">00:00</span>
+      </div>
+    </section>
+
+    <section class="mode hidden" id="prepared-mode">
+      <div class="song-selector">
+        <label for="song-list">Выберите песню:</label>
+        <select id="song-list"><option value="">-- Выберите --</option></select>
+        <input type="file" id="file-input" accept=".json" style="display:none" />
+        <button class="btn" id="upload-btn">📁 Загрузить</button>
+      </div>
+
+      <div class="playback-controls">
+        <button id="play-btn" class="btn btn-play" disabled>▶️ Играть</button>
+        <button id="pause-btn" class="btn btn-pause" disabled>⏸️ Пауза</button>
+        <button id="stop-play-btn" class="btn btn-stop" disabled>⏹️ Остановить</button>
+        <div class="speed-control">
+          <label for="speed">Скорость:</label>
+          <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1" />
+          <span id="speed-value">1x</span>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+        <div class="time-indicators"><span id="current-time">00:00</span> / <span id="total-time">00:00</span></div>
+      </div>
+
+      <div id="upcoming-notes" class="upcoming-notes"><h3>Предстоящие ноты:</h3><ul></ul></div>
+    </section>
+
+    <footer class="credits"><small>Реализация: vanilla HTML/CSS/JS — Web Audio API</small></footer>
   </div>
-  <div class="progress-container">
-    <div class="progress-bar" id="progress-bar"></div>
-  </div>
-  <div class="piano-container">
-    <div class="piano" id="piano"></div>
-  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
