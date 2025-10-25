@@ -1,0 +1,246 @@
+{
+  "name": "К Элизе 4 (Фортепиано)",
+  "duration": 506400,
+  "notes": [
+    {
+      "key": "E5",
+      "startTime": 0,
+      "duration": 15000
+    },
+    {
+      "key": "D#5",
+      "startTime": 12000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 24000,
+      "duration": 15000
+    },
+    {
+      "key": "D#5",
+      "startTime": 36000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 48000,
+      "duration": 15000
+    },
+    {
+      "key": "B4",
+      "startTime": 60000,
+      "duration": 15000
+    },
+    {
+      "key": "D5",
+      "startTime": 72000,
+      "duration": 15000
+    },
+    {
+      "key": "C5",
+      "startTime": 84000,
+      "duration": 15000
+    },
+    {
+      "key": "A4",
+      "startTime": 96000,
+      "duration": 22500
+    },
+    {
+      "key": "A2",
+      "startTime": 96000,
+      "duration": 10500
+    },
+    {
+      "key": "E4",
+      "startTime": 108000,
+      "duration": 10500
+    },
+    {
+      "key": "A4",
+      "startTime": 120000,
+      "duration": 22500
+    },
+    {
+      "key": "A2",
+      "startTime": 120000,
+      "duration": 10500
+    },
+    {
+      "key": "E4",
+      "startTime": 132000,
+      "duration": 10500
+    },
+    {
+      "key": "E5",
+      "startTime": 144000,
+      "duration": 15000
+    },
+    {
+      "key": "D#5",
+      "startTime": 156000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 168000,
+      "duration": 15000
+    },
+    {
+      "key": "D#5",
+      "startTime": 180000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 192000,
+      "duration": 15000
+    },
+    {
+      "key": "B4",
+      "startTime": 204000,
+      "duration": 15000
+    },
+    {
+      "key": "D5",
+      "startTime": 216000,
+      "duration": 15000
+    },
+    {
+      "key": "C5",
+      "startTime": 228000,
+      "duration": 15000
+    },
+    {
+      "key": "A4",
+      "startTime": 240000,
+      "duration": 22500
+    },
+    {
+      "key": "A3",
+      "startTime": 240000,
+      "duration": 10500
+    },
+    {
+      "key": "F4",
+      "startTime": 252000,
+      "duration": 10500
+    },
+    {
+      "key": "A4",
+      "startTime": 264000,
+      "duration": 22500
+    },
+    {
+      "key": "A3",
+      "startTime": 264000,
+      "duration": 10500
+    },
+    {
+      "key": "F4",
+      "startTime": 276000,
+      "duration": 10500
+    },
+    {
+      "key": "E5",
+      "startTime": 288000,
+      "duration": 15000
+    },
+    {
+      "key": "G4",
+      "startTime": 300000,
+      "duration": 15000
+    },
+    {
+      "key": "B4",
+      "startTime": 312000,
+      "duration": 15000
+    },
+    {
+      "key": "C5",
+      "startTime": 324000,
+      "duration": 15000
+    },
+    {
+      "key": "G5",
+      "startTime": 336000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 348000,
+      "duration": 15000
+    },
+    {
+      "key": "D5",
+      "startTime": 360000,
+      "duration": 15000
+    },
+    {
+      "key": "F5",
+      "startTime": 372000,
+      "duration": 15000
+    },
+    {
+      "key": "A4",
+      "startTime": 384000,
+      "duration": 22500
+    },
+    {
+      "key": "G3",
+      "startTime": 384000,
+      "duration": 10500
+    },
+    {
+      "key": "D4",
+      "startTime": 396000,
+      "duration": 10500
+    },
+    {
+      "key": "A4",
+      "startTime": 408000,
+      "duration": 22500
+    },
+    {
+      "key": "G3",
+      "startTime": 408000,
+      "duration": 10500
+    },
+    {
+      "key": "D4",
+      "startTime": 420000,
+      "duration": 10500
+    },
+    {
+      "key": "E5",
+      "startTime": 432000,
+      "duration": 15000
+    },
+    {
+      "key": "D#5",
+      "startTime": 444000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 456000,
+      "duration": 15000
+    },
+    {
+      "key": "D#5",
+      "startTime": 468000,
+      "duration": 15000
+    },
+    {
+      "key": "E5",
+      "startTime": 480000,
+      "duration": 15000
+    },
+    {
+      "key": "B4",
+      "startTime": 492000,
+      "duration": 15000
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Electric Piano",
+  "duration": 15019,
+  "notes": [
+    {
+      "key": "G4",
+      "startTime": 336,
+      "duration": 246
+    },
+    {
+      "key": "G4",
+      "startTime": 720,
+      "duration": 112
+    },
+    {
+      "key": "A4",
+      "startTime": 907,
+      "duration": 416
+    },
+    {
+      "key": "G4",
+      "startTime": 1478,
+      "duration": 352
+    },
+    {
+      "key": "C5",
+      "startTime": 2069,
+      "duration": 401
+    },
+    {
+      "key": "B4",
+      "startTime": 2638,
+      "duration": 848
+    },
+    {
+      "key": "G4",
+      "startTime": 3737,
+      "duration": 288
+    },
+    {
+      "key": "G4",
+      "startTime": 4135,
+      "duration": 88
+    },
+    {
+      "key": "A4",
+      "startTime": 4326,
+      "duration": 359
+    },
+    {
+      "key": "G4",
+      "startTime": 4853,
+      "duration": 287
+    },
+    {
+      "key": "D5",
+      "startTime": 5362,
+      "duration": 440
+    },
+    {
+      "key": "C5",
+      "startTime": 5910,
+      "duration": 705
+    },
+    {
+      "key": "G4",
+      "startTime": 6953,
+      "duration": 214
+    },
+    {
+      "key": "G4",
+      "startTime": 7305,
+      "duration": 119
+    },
+    {
+      "key": "G5",
+      "startTime": 7487,
+      "duration": 359
+    },
+    {
+      "key": "E5",
+      "startTime": 8057,
+      "duration": 376
+    },
+    {
+      "key": "C5",
+      "startTime": 8591,
+      "duration": 399
+    },
+    {
+      "key": "B4",
+      "startTime": 9142,
+      "duration": 580
+    },
+    {
+      "key": "A4",
+      "startTime": 9665,
+      "duration": 702
+    },
+    {
+      "key": "F5",
+      "startTime": 10665,
+      "duration": 234
+    },
+    {
+      "key": "F5",
+      "startTime": 11028,
+      "duration": 104
+    },
+    {
+      "key": "E5",
+      "startTime": 11246,
+      "duration": 489
+    },
+    {
+      "key": "C5",
+      "startTime": 11812,
+      "duration": 558
+    },
+    {
+      "key": "D5",
+      "startTime": 12347,
+      "duration": 605
+    },
+    {
+      "key": "C5",
+      "startTime": 12983,
+      "duration": 2041
+    }
+  ]
+}

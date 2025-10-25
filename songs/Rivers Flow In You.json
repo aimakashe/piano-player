@@ -1,0 +1,391 @@
+{
+  "name": "Yiruma - Rivers Flow In You",
+  "duration": 1827600,
+  "notes": [
+    {
+      "key": "A3",
+      "startTime": 0,
+      "duration": 96000
+    },
+    {
+      "key": "F#4",
+      "startTime": 0,
+      "duration": 96000
+    },
+    {
+      "key": "D5",
+      "startTime": 0,
+      "duration": 96000
+    },
+    {
+      "key": "D4",
+      "startTime": 0,
+      "duration": 18000
+    },
+    {
+      "key": "G5",
+      "startTime": 0,
+      "duration": 18000
+    },
+    {
+      "key": "F#4",
+      "startTime": 18000,
+      "duration": 18000
+    },
+    {
+      "key": "G5",
+      "startTime": 18000,
+      "duration": 18000
+    },
+    {
+      "key": "A4",
+      "startTime": 36000,
+      "duration": 18000
+    },
+    {
+      "key": "G5",
+      "startTime": 36000,
+      "duration": 18000
+    },
+    {
+      "key": "G4",
+      "startTime": 54000,
+      "duration": 18000
+    },
+    {
+      "key": "G5",
+      "startTime": 54000,
+      "duration": 18000
+    },
+    {
+      "key": "F#4",
+      "startTime": 72000,
+      "duration": 18000
+    },
+    {
+      "key": "G5",
+      "startTime": 72000,
+      "duration": 18000
+    },
+    {
+      "key": "E4",
+      "startTime": 90000,
+      "duration": 18000
+    },
+    {
+      "key": "G5",
+      "startTime": 90000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 108000,
+      "duration": 18000
+    },
+    {
+      "key": "F#5",
+      "startTime": 108000,
+      "duration": 18000
+    },
+    {
+      "key": "A3",
+      "startTime": 110000,
+      "duration": 94000
+    },
+    {
+      "key": "F#4",
+      "startTime": 110000,
+      "duration": 94000
+    },
+    {
+      "key": "D5",
+      "startTime": 110000,
+      "duration": 94000
+    },
+    {
+      "key": "E4",
+      "startTime": 126000,
+      "duration": 18000
+    },
+    {
+      "key": "F#5",
+      "startTime": 126000,
+      "duration": 18000
+    },
+    {
+      "key": "G4",
+      "startTime": 144000,
+      "duration": 18000
+    },
+    {
+      "key": "F#5",
+      "startTime": 144000,
+      "duration": 18000
+    },
+    {
+      "key": "A4",
+      "startTime": 162000,
+      "duration": 18000
+    },
+    {
+      "key": "E5",
+      "startTime": 162000,
+      "duration": 18000
+    },
+    {
+      "key": "G4",
+      "startTime": 180000,
+      "duration": 18000
+    },
+    {
+      "key": "E5",
+      "startTime": 180000,
+      "duration": 18000
+    },
+    {
+      "key": "F#4",
+      "startTime": 198000,
+      "duration": 18000
+    },
+    {
+      "key": "D5",
+      "startTime": 198000,
+      "duration": 18000
+    },
+    {
+      "key": "E4",
+      "startTime": 216000,
+      "duration": 18000
+    },
+    {
+      "key": "D5",
+      "startTime": 216000,
+      "duration": 18000
+    },
+    {
+      "key": "A3",
+      "startTime": 220000,
+      "duration": 94000
+    },
+    {
+      "key": "F#4",
+      "startTime": 220000,
+      "duration": 94000
+    },
+    {
+      "key": "D5",
+      "startTime": 220000,
+      "duration": 94000
+    },
+    {
+      "key": "D4",
+      "startTime": 234000,
+      "duration": 18000
+    },
+    {
+      "key": "C5",
+      "startTime": 234000,
+      "duration": 18000
+    },
+    {
+      "key": "C4",
+      "startTime": 252000,
+      "duration": 18000
+    },
+    {
+      "key": "B4",
+      "startTime": 252000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 270000,
+      "duration": 18000
+    },
+    {
+      "key": "C5",
+      "startTime": 270000,
+      "duration": 18000
+    },
+    {
+      "key": "C4",
+      "startTime": 288000,
+      "duration": 18000
+    },
+    {
+      "key": "B4",
+      "startTime": 288000,
+      "duration": 18000
+    },
+    {
+      "key": "B3",
+      "startTime": 306000,
+      "duration": 18000
+    },
+    {
+      "key": "A4",
+      "startTime": 306000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 324000,
+      "duration": 18000
+    },
+    {
+      "key": "B4",
+      "startTime": 324000,
+      "duration": 18000
+    },
+    {
+      "key": "G3",
+      "startTime": 330000,
+      "duration": 90000
+    },
+    {
+      "key": "B4",
+      "startTime": 330000,
+      "duration": 90000
+    },
+    {
+      "key": "D5",
+      "startTime": 330000,
+      "duration": 90000
+    },
+    {
+      "key": "D4",
+      "startTime": 342000,
+      "duration": 18000
+    },
+    {
+      "key": "A4",
+      "startTime": 342000,
+      "duration": 18000
+    },
+    {
+      "key": "F#4",
+      "startTime": 360000,
+      "duration": 18000
+    },
+    {
+      "key": "G4",
+      "startTime": 360000,
+      "duration": 18000
+    },
+    {
+      "key": "A4",
+      "startTime": 378000,
+      "duration": 18000
+    },
+    {
+      "key": "G4",
+      "startTime": 378000,
+      "duration": 18000
+    },
+    {
+      "key": "G4",
+      "startTime": 396000,
+      "duration": 18000
+    },
+    {
+      "key": "F#4",
+      "startTime": 396000,
+      "duration": 18000
+    },
+    {
+      "key": "F#4",
+      "startTime": 414000,
+      "duration": 18000
+    },
+    {
+      "key": "E4",
+      "startTime": 414000,
+      "duration": 18000
+    },
+    {
+      "key": "E4",
+      "startTime": 432000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 432000,
+      "duration": 18000
+    },
+    {
+      "key": "G3",
+      "startTime": 440000,
+      "duration": 94000
+    },
+    {
+      "key": "B4",
+      "startTime": 440000,
+      "duration": 94000
+    },
+    {
+      "key": "D5",
+      "startTime": 440000,
+      "duration": 94000
+    },
+    {
+      "key": "D4",
+      "startTime": 450000,
+      "duration": 18000
+    },
+    {
+      "key": "E4",
+      "startTime": 450000,
+      "duration": 18000
+    },
+    {
+      "key": "C4",
+      "startTime": 468000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 468000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 486000,
+      "duration": 18000
+    },
+    {
+      "key": "C4",
+      "startTime": 486000,
+      "duration": 18000
+    },
+    {
+      "key": "C4",
+      "startTime": 504000,
+      "duration": 18000
+    },
+    {
+      "key": "B3",
+      "startTime": 504000,
+      "duration": 18000
+    },
+    {
+      "key": "B3",
+      "startTime": 522000,
+      "duration": 18000
+    },
+    {
+      "key": "A3",
+      "startTime": 522000,
+      "duration": 18000
+    },
+    {
+      "key": "D4",
+      "startTime": 540000,
+      "duration": 18000
+    },
+    {
+      "key": "B4",
+      "startTime": 540000,
+      "duration": 18000
+    }
+  ]
+}
