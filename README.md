@@ -3,6 +3,7 @@
 An interactive web application for playing virtual piano with recording and playback capabilities.
 
 ![alt text](image.png)
+
 ![alt text](image-1.png)
 
 # npm and ESLint Setup
