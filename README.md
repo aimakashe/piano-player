@@ -2,9 +2,7 @@
 
 An interactive web application for playing virtual piano with recording and playback capabilities.
 
-![alt text](image.png)
-
-![alt text](image-1.png)
+![alt text](image-2.png)
 
 # npm and ESLint Setup
 npm init -y - This will create a package.json file
